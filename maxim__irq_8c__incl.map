@@ -1,0 +1,9 @@
+<map id="drivers/platform/maxim/maxim_irq.c" name="drivers/platform/maxim/maxim_irq.c">
+<area shape="rect" id="node1" title="Implementation of external irq driver." alt="" coords="67,5,245,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="53,244,123,271"/>
+<area shape="rect" id="node3" title=" " alt="" coords="27,95,98,121"/>
+<area shape="rect" id="node4" href="$errno_8h.html" title="Error macro definition for ARM Compiler." alt="" coords="122,95,190,121"/>
+<area shape="rect" id="node5" href="$no__os__irq_8h.html" title="Header file of IRQ interface." alt="" coords="159,169,255,196"/>
+<area shape="rect" id="node6" href="$maxim_2irq__extra_8h.html" title="Header file for maxim irq specifics." alt="" coords="266,95,358,121"/>
+<area shape="rect" id="node7" href="$maxim__hal_8h.html" title="Include chip specific peripheral macros." alt="" coords="279,169,385,196"/>
+</map>

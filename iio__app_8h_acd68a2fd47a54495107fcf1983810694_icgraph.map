@@ -1,0 +1,6 @@
+<map id="iio_app_run" name="iio_app_run">
+<area shape="rect" id="node1" title="Register devices and start an iio application." alt="" coords="299,31,396,57"/>
+<area shape="rect" id="node2" href="$iio__example_8h.html#a7d58fb707a91d4615d3bf949fabaa1e2" title="IIO example main execution." alt="" coords="108,5,251,32"/>
+<area shape="rect" id="node4" href="$ad7746-ebz_2src_2app_2headless_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="152,56,207,83"/>
+<area shape="rect" id="node3" href="$eval-adxl355-pmdz_2src_2platform_2stm32_2main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="Main function execution for STM32 platform." alt="" coords="5,5,60,32"/>
+</map>

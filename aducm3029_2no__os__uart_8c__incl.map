@@ -1,0 +1,14 @@
+<map id="drivers/platform/aducm3029/no_os_uart.c" name="drivers/platform/aducm3029/no_os_uart.c">
+<area shape="rect" id="node1" title="Implementation of UART driver for ADuCM302x." alt="" coords="339,5,545,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,172,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="263,244,333,271"/>
+<area shape="rect" id="node4" href="$no__os__uart_8h.html" title="Header file of UART interface." alt="" coords="413,95,519,121"/>
+<area shape="rect" id="node8" href="$no__os__irq_8h.html" title="Header file of IRQ interface." alt="" coords="582,95,678,121"/>
+<area shape="rect" id="node9" href="$aducm3029_2uart__extra_8h.html" title="Header file of UART driver for ADuCM302x." alt="" coords="682,169,783,196"/>
+<area shape="rect" id="node12" href="$no__os__util_8h.html" title="Implementation of utility functions." alt="" coords="248,169,348,196"/>
+<area shape="rect" id="node5" title=" " alt="" coords="559,244,629,271"/>
+<area shape="rect" id="node6" title=" " alt="" coords="403,244,486,271"/>
+<area shape="rect" id="node7" href="$no__os__lf256fifo_8h.html" title="SPSC lock&#45;free fifo of fixed size (256), specialized for UART." alt="" coords="423,169,557,196"/>
+<area shape="rect" id="node10" href="$no__os__error_8h.html" title="Error codes definition." alt="" coords="678,244,787,271"/>
+<area shape="rect" id="node11" href="$errno_8h.html" title="Error macro definition for ARM Compiler." alt="" coords="699,319,767,345"/>
+</map>

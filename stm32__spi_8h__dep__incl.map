@@ -1,0 +1,6 @@
+<map id="drivers/platform/stm32/stm32_spi.h" name="drivers/platform/stm32/stm32_spi.h">
+<area shape="rect" id="node1" title="Header file for the stm32 spi driver." alt="" coords="108,5,280,47"/>
+<area shape="rect" id="node2" href="$stm32__spi_8c.html" title="Implementation of stm32 spi driver." alt="" coords="5,102,177,143"/>
+<area shape="rect" id="node3" href="$eval-adxl355-pmdz_2src_2platform_2stm32_2parameters_8h.html" title="Definitions specific to STM32 platform used by eval&#45;adxl355&#45;pmdz project." alt="" coords="201,95,392,151"/>
+<area shape="rect" id="node4" href="$eval-adxl355-pmdz_2src_2platform_2stm32_2parameters_8c.html" title="Definition of STM32 platform data used by eval&#45;adxl355&#45;pmdz project." alt="" coords="201,199,392,255"/>
+</map>

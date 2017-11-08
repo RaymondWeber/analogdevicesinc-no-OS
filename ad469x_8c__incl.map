@@ -1,0 +1,21 @@
+<map id="drivers/adc/ad469x/ad469x.c" name="drivers/adc/ad469x/ad469x.c">
+<area shape="rect" id="node1" title="Implementation of ad69x Driver." alt="" coords="266,5,413,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,76,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="101,95,167,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="207,393,277,420"/>
+<area shape="rect" id="node5" href="$ad469x_8h.html" title="Header file for ad469x Driver." alt="" coords="543,95,626,121"/>
+<area shape="rect" id="node6" href="$spi__engine_8h.html" title=" " alt="" coords="533,169,637,196"/>
+<area shape="rect" id="node12" href="$no__os__util_8h.html" title="Implementation of utility functions." alt="" coords="243,319,343,345"/>
+<area shape="rect" id="node17" href="$no__os__delay_8h.html" title="Header file of Delay functions." alt="" coords="1035,244,1148,271"/>
+<area shape="rect" id="node18" href="$no__os__error_8h.html" title="Error codes definition." alt="" coords="1061,95,1170,121"/>
+<area shape="rect" id="node14" href="$clk__axi__clkgen_8h.html" title="Driver for the Analog Devices AXI CLKGEN." alt="" coords="829,319,959,345"/>
+<area shape="rect" id="node15" href="$no__os__pwm_8h.html" title="Header file of PWM Interface." alt="" coords="419,319,529,345"/>
+<area shape="rect" id="node16" href="$no__os__gpio_8h.html" title="Header file of GPIO Interface." alt="" coords="879,169,986,196"/>
+<area shape="rect" id="node7" title=" " alt="" coords="705,393,776,420"/>
+<area shape="rect" id="node8" title=" " alt="" coords="537,244,632,271"/>
+<area shape="rect" id="node9" href="$spi__engine__private_8h.html" title=" " alt="" coords="355,244,513,271"/>
+<area shape="rect" id="node13" href="$axi__dmac_8h.html" title="Driver for the Analog Devices AXI&#45;DMAC core." alt="" coords="656,244,753,271"/>
+<area shape="rect" id="node10" title=" " alt="" coords="339,393,422,420"/>
+<area shape="rect" id="node11" href="$no__os__spi_8h.html" title="Header file of SPI Interface." alt="" coords="554,319,653,345"/>
+<area shape="rect" id="node19" href="$errno_8h.html" title="Error macro definition for ARM Compiler." alt="" coords="1081,169,1149,196"/>
+</map>

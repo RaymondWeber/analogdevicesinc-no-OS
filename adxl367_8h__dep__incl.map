@@ -1,0 +1,12 @@
+<map id="drivers/accel/adxl367/adxl367.h" name="drivers/accel/adxl367/adxl367.h">
+<area shape="rect" id="node1" title="Header file of ADXL367 Driver." alt="" coords="802,5,963,47"/>
+<area shape="rect" id="node2" href="$adxl367_8c.html" title="Implementation of ADXL367 Driver." alt="" coords="590,95,751,136"/>
+<area shape="rect" id="node3" href="$eval-adxl367z_2src_2common_2common__data_8h.html" title="Defines common data to be used by eval&#45;adxl367z examples." alt="" coords="775,95,990,136"/>
+<area shape="rect" id="node9" href="$eval-adxl367z_2src_2examples_2dummy_2dummy__example_8c.html" title="DUMMY example for eval&#45;adxl367z project." alt="" coords="1345,191,1567,247"/>
+<area shape="rect" id="node4" href="$eval-adxl355-pmdz_2src_2examples_2dummy_2dummy__example_8c.html" title="DUMMY example header for eval&#45;adxl355&#45;pmdz project." alt="" coords="5,191,213,247"/>
+<area shape="rect" id="node5" href="$iio__example_8c.html" title="Implementation of IIO example for eval&#45;adxl355&#45;pmdz project." alt="" coords="237,191,419,247"/>
+<area shape="rect" id="node6" href="$iio__trigger__example_8c.html" title="Implementation of IIO trigger example for eval&#45;adxl355&#45;pmdz project." alt="" coords="443,184,650,255"/>
+<area shape="rect" id="node7" href="$eval-adxl355-pmdz_2src_2platform_2stm32_2main_8c.html" title="Main file for STM32 platform of eval&#45;adxl355&#45;pmdz project." alt="" coords="674,191,865,247"/>
+<area shape="rect" id="node8" href="$eval-adxl367z_2src_2common_2common__data_8c.html" title="Defines common data to be used by eval&#45;adxl367z examples." alt="" coords="889,199,1103,240"/>
+<area shape="rect" id="node10" href="$eval-adxl367z_2src_2platform_2xilinx_2main_8c.html" title="Main file for XILINX platform of eval&#45;adxl367z project." alt="" coords="1127,199,1321,240"/>
+</map>

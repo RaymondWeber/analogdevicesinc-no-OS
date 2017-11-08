@@ -1,0 +1,10 @@
+<map id="drivers/platform/maxim/maxim_hal.h" name="drivers/platform/maxim/maxim_hal.h">
+<area shape="rect" id="node1" title="Include chip specific peripheral macros." alt="" coords="259,5,436,47"/>
+<area shape="rect" id="node2" href="$maxim_2gpio__extra_8h.html" title="Header file for maxim gpio specifics." alt="" coords="5,95,183,136"/>
+<area shape="rect" id="node3" href="$maxim__gpio_8c.html" title="Implementation of gpio driver." alt="" coords="95,184,272,225"/>
+<area shape="rect" id="node4" href="$maxim_2irq__extra_8h.html" title="Header file for maxim irq specifics." alt="" coords="259,95,436,136"/>
+<area shape="rect" id="node6" href="$maxim__i2c_8c.html" title="Implementation of max32660 I2C driver." alt="" coords="460,95,637,136"/>
+<area shape="rect" id="node7" href="$maxim__uart_8h.html" title="Header file of UART driver." alt="" coords="661,95,839,136"/>
+<area shape="rect" id="node5" href="$maxim__irq_8c.html" title="Implementation of external irq driver." alt="" coords="296,184,473,225"/>
+<area shape="rect" id="node8" href="$maxim__uart_8c.html" title="Source file of UART driver for STM32." alt="" coords="661,184,839,225"/>
+</map>

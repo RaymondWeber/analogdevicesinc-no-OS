@@ -1,0 +1,7 @@
+<map id="no_os_irq_ctrl_init" name="no_os_irq_ctrl_init">
+<area shape="rect" id="node1" title="Initialize the IRQ interrupts." alt="" coords="348,56,488,83"/>
+<area shape="rect" id="node2" href="$iio__trigger__example_8h.html#aa6785eab0c37adc61db331ebebdc40ee" title="IIO trigger example main execution." alt="" coords="108,5,300,32"/>
+<area shape="rect" id="node4" href="$ad4110_2src_2app_2main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="main" alt="" coords="177,56,231,83"/>
+<area shape="rect" id="node5" href="$stm32__uart_8c.html#a196e5101239dca2f07f7f02c408fe623" title="Initialize the UART communication peripheral." alt="" coords="143,107,265,133"/>
+<area shape="rect" id="node3" href="$eval-adxl355-pmdz_2src_2platform_2stm32_2main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="Main function execution for STM32 platform." alt="" coords="5,5,60,32"/>
+</map>
