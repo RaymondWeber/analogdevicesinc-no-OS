@@ -41,10 +41,34 @@
 
 #include "maxim_hal.h"
 #include "no_os_irq.h"
+#include "uart.h"
+
+/**
+ * @brief Struct used to store a (peripheral, callback) pair
+ */
+struct irq_action {
+	uint32_t irq_id;
+	void *handle;
+	void (*callback)(void *context);
+	void *ctx;
+};
+
+/**
+ * @brief Struct that stores all the actions for a specific event
+ */
+struct event_list {
+	enum no_os_irq_event event;
+	struct no_os_list_desc *actions;
+};
 
 /**
  * @brief maxim platform specific irq platform ops structure
  */
 extern const struct no_os_irq_platform_ops max_irq_ops;
+
+/**
+ * @brief Platform specific uart callback function
+ */
+void max_uart_callback(mxc_uart_req_t *, int);
 
 #endif
