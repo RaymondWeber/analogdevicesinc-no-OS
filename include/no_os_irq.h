@@ -143,6 +143,8 @@ struct no_os_callback_desc {
 	enum no_os_irq_event event;
 	/** Interrupt source peripheral specifier. */
 	enum no_os_irq_peripheral peripheral;
+	/** Extra information for register_callback */
+	void *handle;
 };
 
 /**
