@@ -1,9 +1,9 @@
 /***************************************************************************//**
- *   @file   iio_demo/src/app/main.c
- *   @brief  Implementation of Main Function.
- *   @author Cristian Pop (cristian.pop@analog.com)
+ *   @file   iio_trigger_example.c
+ *   @brief  Implementation of IIO trigger example for iio_demo project.
+ *   @author RBolboac (ramona.bolboaca@analog.com)
 ********************************************************************************
- * Copyright 2020(c) Analog Devices, Inc.
+ * Copyright 2022(c) Analog Devices, Inc.
  *
  * All rights reserved.
  *
@@ -40,82 +40,25 @@
 /******************************************************************************/
 /***************************** Include Files **********************************/
 /******************************************************************************/
-
-#include "app_config.h"
-#include "parameters.h"
-#include "iio_app.h"
+#include "iio_trigger_example.h"
 #include "iio_adc_demo.h"
 #include "iio_dac_demo.h"
+#include "common_data.h"
 #include "no_os_util.h"
 
-#ifdef XILINX_PLATFORM
-#include <xparameters.h>
-#include <xil_cache.h>
-#endif // XILINX_PLATFORM
-
-#ifdef ADUCM_PLATFORM
-#include <sys/platform.h>
-#include "adi_initialize.h"
-#include <drivers/pwr/adi_pwr.h>
-#endif
-
-#ifdef STM32_PLATFORM
-#include "stm32_hal.h"
-#endif
-
-#include "no_os_error.h"
-#define DEMO_CHANNELS		no_os_max(TOTAL_ADC_CHANNELS, TOTAL_DAC_CHANNELS)
-#ifdef ENABLE_LOOPBACK
-#define SAMPLES_PER_CHANNEL	200
-static uint16_t loopback_buffs[DEMO_CHANNELS][SAMPLES_PER_CHANNEL];
-#else //ENABLE_LOOPBACK
-#define SAMPLES_PER_CHANNEL	0
-#define loopback_buffs		NULL
-#endif //ENABLE_LOOPBACK
-
-#if defined(ADUCM_PLATFORM) || defined(STM32_PLATFORM) || defined(LINUX_PLATFORM)
-
-#define MAX_SIZE_BASE_ADDR	(SAMPLES_PER_CHANNEL * DEMO_CHANNELS * \
-					sizeof(uint16_t))
-
-static uint8_t in_buff[MAX_SIZE_BASE_ADDR];
-static uint8_t out_buff[MAX_SIZE_BASE_ADDR];
-
-#define DAC_DDR_BASEADDR	out_buff
-#define ADC_DDR_BASEADDR	in_buff
-
-#endif
-
-int32_t platform_init()
-{
-#if defined(ADUCM_PLATFORM)
-	if (ADI_PWR_SUCCESS != adi_pwr_Init())
-		return -1;
-
-	if (ADI_PWR_SUCCESS != adi_pwr_SetClockDivider(ADI_CLOCK_HCLK, 1u))
-		return -1;
-
-	if (ADI_PWR_SUCCESS != adi_pwr_SetClockDivider(ADI_CLOCK_PCLK, 1u))
-		return -1;
-	adi_initComponents();
-#elif defined(STM32_PLATFORM)
-	stm32_init();
-#endif
-	return 0;
-}
-
+/******************************************************************************/
+/************************ Functions Definitions *******************************/
+/******************************************************************************/
 /***************************************************************************//**
- * @brief main
+ * @brief IIO trigger example main execution.
+ *
+ * @return ret - Result of the example execution. If working correctly, will
+ *               execute continuously function iio_app_run_with_trigs and will
+ * 				 not return.
 *******************************************************************************/
-int main(void)
+int iio_trigger_example_main ()
 {
 	int32_t status;
-
-	/* adc demo configurations. */
-	struct adc_demo_init_param adc_init_par;
-
-	/* dac demo configurations. */
-	struct dac_demo_init_param dac_init_par;
 
 	/* adc instance descriptor. */
 	struct adc_demo_desc *adc_desc;
@@ -123,9 +66,11 @@ int main(void)
 	/* dac instance descriptor. */
 	struct dac_demo_desc *dac_desc;
 
-	status = platform_init();
-	if (status != 0)
-		return status;
+	/* adc trigger instance descriptor. */
+	struct adc_demo_trig *adc_sw_trig_desc;
+
+	/* iio desc */
+	struct iio_desc *iio_desc;
 
 	struct iio_data_buffer adc_buff = {
 		.buff = (void *)ADC_DDR_BASEADDR,
@@ -137,31 +82,16 @@ int main(void)
 		.size = MAX_SIZE_BASE_ADDR
 	};
 
-	adc_init_par = (struct adc_demo_init_param) {
-		.ext_buff_len = SAMPLES_PER_CHANNEL,
-		.ext_buff = (uint16_t **)loopback_buffs,
-		.dev_global_attr = 3333,
-		.dev_ch_attr = {1111,1112,1113,1114,1115,1116,1117,1118,1119,1120,1121,1122,1123,1124,1125,1126}
-	};
-
-#ifdef XILINX_PLATFORM
-	/* Enable the instruction cache. */
-	Xil_ICacheEnable();
-	/* Enable the data cache. */
-	Xil_DCacheEnable();
-#endif //XILINX_PLATFORM
-
 	status = adc_demo_init(&adc_desc, &adc_init_par);
 	if (status != 0)
 		return status;
 
-	dac_init_par = (struct dac_demo_init_param) {
-		.loopback_buffer_len = SAMPLES_PER_CHANNEL,
-		.loopback_buffers = (uint16_t **)loopback_buffs,
-		.dev_global_attr = 4444,
-		.dev_ch_attr = {1111,1112,1113,1114,1115,1116,1117,1118,1119,1120,1121,1122,1123,1124,1125,1126}
-	};
 	status = dac_demo_init(&dac_desc, &dac_init_par);
+	if (status != 0)
+		return status;
+
+	adc_trig_init_par.iio_desc = &iio_desc;
+	status = adc_demo_software_trigger_init(&adc_sw_trig_desc, &adc_trig_init_par);
 	if (status != 0)
 		return status;
 
@@ -172,5 +102,11 @@ int main(void)
 			       &dac_demo_iio_descriptor,NULL, &dac_buff)
 	};
 
-	return iio_app_run(devices, NO_OS_ARRAY_SIZE(devices));
+	struct iio_trigger_init trigs[] = {
+		IIO_APP_TRIGGER(SW_TRIGGER_NAME, adc_sw_trig_desc,
+				&adc_demo_iio_software_trigger_desc)
+	};
+
+	return iio_app_run_with_trigs(devices, NO_OS_ARRAY_SIZE(devices),
+				      trigs, NO_OS_ARRAY_SIZE(trigs), NULL, &iio_desc);
 }
