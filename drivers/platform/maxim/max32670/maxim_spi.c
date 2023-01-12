@@ -125,7 +125,6 @@ int32_t max_spi_init(struct no_os_spi_desc **desc,
 	descriptor->chip_select = param->chip_select;
 	descriptor->mode = param->mode;
 	descriptor->bit_order = param->bit_order;
-	descriptor->platform_ops = &max_spi_ops;
 	descriptor->extra = eparam;
 
 	if (descriptor->device_id >= MXC_SPI_INSTANCES) {
@@ -200,8 +199,8 @@ int32_t max_spi_transfer(struct no_os_spi_desc *desc,
 		req.txCnt = 0;
 		req.rxCnt = 0;
 		req.ssDeassert = msgs[i].cs_change;
-		req.txLen = msgs[i].bytes_number;
-		req.rxLen = msgs[i].bytes_number;
+		req.txLen = req.txData ? msgs[i].bytes_number : 0;
+		req.rxLen = req.rxData ? msgs[i].bytes_number : 0;
 
 		ret = MXC_SPI_MasterTransaction(&req);
 

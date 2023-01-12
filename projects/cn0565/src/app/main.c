@@ -118,17 +118,19 @@ int main(void)
 #endif
 		.asynchronous_rx = true,
 		.irq_id = UART_IRQ_ID,
+#if defined(STM32_PLATFORM)
+		.platform_ops = &stm32_uart_ops,
+#elif defined(ADUCM_PLATFORM)
+		.platform_ops = &aducm_uart_ops,
+#endif
 	};
 
 	ret = no_os_uart_init(&uart, &uip);
 	if (ret < 0)
 		return ret;
 
-#if defined(STM32_PLATFORM)
-	stm32_uart_stdio(uart);
-#elif defined(ADUCM_PLATFORM)
-	init_uart_stdio(uart);
-#endif
+	no_os_uart_stdio(uart);
+
 	printf("Hello!\n");
 #endif
 	struct no_os_i2c_init_param i2cip = {

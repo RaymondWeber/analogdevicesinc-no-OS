@@ -100,9 +100,9 @@ static uint8_t out_buff[MAX_SIZE_BASE_ADDR];
 
 #if defined(DAC_DMA_EXAMPLE) || defined(IIO_SUPPORT)
 uint32_t dac_buffer[DAC_BUFFER_SAMPLES] __attribute__ ((aligned));
+#endif
 uint16_t adc_buffer[ADC_BUFFER_SAMPLES * ADC_CHANNELS] __attribute__ ((
 			aligned));
-#endif
 
 #define AD9361_ADC_DAC_BYTES_PER_SAMPLE 2
 
@@ -160,7 +160,7 @@ struct axi_dac_init tx_dac_init = {
 struct axi_dmac_init rx_dmac_init = {
 	"rx_dmac",
 	CF_AD9361_RX_DMA_BASEADDR,
-#ifdef ADC_DMA_IRQ_EXAMPLE
+#ifdef DMA_IRQ_ENABLE
 	IRQ_ENABLED
 #else
 	IRQ_DISABLED
@@ -170,7 +170,7 @@ struct axi_dmac *rx_dmac;
 struct axi_dmac_init tx_dmac_init = {
 	"tx_dmac",
 	CF_AD9361_TX_DMA_BASEADDR,
-#ifdef ADC_DMA_IRQ_EXAMPLE
+#ifdef DMA_IRQ_ENABLE
 	IRQ_ENABLED
 #else
 	IRQ_DISABLED
@@ -558,7 +558,8 @@ int main(void)
 #endif
 
 #ifdef ADI_RF_SOM_CMOS
-	default_init_param.swap_ports_enable = 1;
+	if (AD9361_DEVICE)
+		default_init_param.swap_ports_enable = 1;
 	default_init_param.lvds_mode_enable = 0;
 	default_init_param.lvds_rx_onchip_termination_enable = 0;
 	default_init_param.full_port_enable = 1;
@@ -607,11 +608,12 @@ int main(void)
 #if defined XILINX_PLATFORM || defined LINUX_PLATFORM || defined ALTERA_PLATFORM
 #ifdef DAC_DMA_EXAMPLE
 #ifdef FMCOMMS5
-	axi_dac_init(&ad9361_phy->tx_dac, &tx_dac_init);
+	axi_dac_init(&ad9361_phy_b->tx_dac, &tx_dac_init);
 	axi_dac_set_datasel(ad9361_phy_b->tx_dac, -1, AXI_DAC_DATA_SEL_DMA);
+	rx_adc_init.base = AD9361_RX_0_BASEADDR;
+	tx_dac_init.base = AD9361_TX_0_BASEADDR;
 #endif
 	axi_dac_init(&ad9361_phy->tx_dac, &tx_dac_init);
-	axi_adc_init(&ad9361_phy->rx_adc, &rx_adc_init);
 	extern const uint32_t sine_lut_iq[1024];
 	axi_dac_set_datasel(ad9361_phy->tx_dac, -1, AXI_DAC_DATA_SEL_DMA);
 	axi_dac_load_custom_data(ad9361_phy->tx_dac, sine_lut_iq,
@@ -639,7 +641,7 @@ int main(void)
 #if (defined XILINX_PLATFORM || defined ALTERA_PLATFORM) && \
 	(defined ADC_DMA_EXAMPLE)
 	uint32_t samples = 16384;
-#if (defined ADC_DMA_IRQ_EXAMPLE)
+#if (defined DMA_IRQ_ENABLE)
 	/**
 	 * Xilinx platform dependent initialization for IRQ.
 	 */
@@ -671,24 +673,24 @@ int main(void)
 
 	struct no_os_callback_desc rx_dmac_callback = {
 		.ctx = rx_dmac,
-		.legacy_callback = axi_dmac_default_isr,
+		.callback = axi_dmac_dev_to_mem_isr,
 	};
 
 	status = no_os_irq_register_callback(irq_desc,
-					     XPAR_FABRIC_AXI_AD9361_ADC_DMA_IRQ_INTR, &rx_dmac_callback);
+					     AD9361_ADC_DMA_IRQ_INTR, &rx_dmac_callback);
 	if(status < 0)
 		return status;
 
 	status = no_os_irq_trigger_level_set(irq_desc,
-					     XPAR_FABRIC_AXI_AD9361_ADC_DMA_IRQ_INTR, NO_OS_IRQ_LEVEL_HIGH);
+					     AD9361_ADC_DMA_IRQ_INTR, NO_OS_IRQ_LEVEL_HIGH);
 	if(status < 0)
 		return status;
 
-	status = no_os_irq_enable(irq_desc, XPAR_FABRIC_AXI_AD9361_ADC_DMA_IRQ_INTR);
+	status = no_os_irq_enable(irq_desc, AD9361_ADC_DMA_IRQ_INTR);
 	if(status < 0)
 		return status;
 
-	samples = 2097150;
+	samples = 2048;
 #endif
 	// NOTE: To prevent unwanted data loss, it's recommended to invalidate
 	// cache after each axi_dmac_transfer_start() call, keeping in mind that the
@@ -696,48 +698,22 @@ int main(void)
 	// of the cache line.
 
 #ifdef DAC_DMA_EXAMPLE
-#ifdef ADC_DMA_IRQ_EXAMPLE
+#ifdef DMA_IRQ_ENABLE
 	struct no_os_callback_desc tx_dmac_callback = {
 		.ctx = tx_dmac,
-		.legacy_callback = axi_dmac_default_isr,
+		.callback = axi_dmac_mem_to_dev_isr,
 	};
 
 	status = no_os_irq_register_callback(irq_desc,
-					     XPAR_FABRIC_AXI_AD9361_DAC_DMA_IRQ_INTR, &tx_dmac_callback);
+					     AD9361_DAC_DMA_IRQ_INTR, &tx_dmac_callback);
 	if(status < 0)
 		return status;
 
-	status = no_os_irq_enable(irq_desc, XPAR_FABRIC_AXI_AD9361_DAC_DMA_IRQ_INTR);
+	status = no_os_irq_enable(irq_desc, AD9361_DAC_DMA_IRQ_INTR);
 	if(status < 0)
 		return status;
 #endif
 
-#ifdef FMCOMMS5
-	struct axi_dma_transfer transfer = {
-		// Number of bytes to write/read
-		.size = samples * AD9361_ADC_DAC_BYTES_PER_SAMPLE *
-		(ad9361_phy_b->tx_dac->num_channels + ad9361_phy->tx_dac->num_channels),
-		// Transfer done flag
-		.transfer_done = 0,
-		// Signal transfer mode
-		.cyclic = CYCLIC,
-		// Address of data source
-		.src_addr = (uintptr_t)DAC_DDR_BASEADDR,
-		// Address of data destination
-		.dest_addr = 0
-	};
-
-	/* Transfer the data. */
-	axi_dmac_transfer_start(tx_dmac, &transfer);
-
-	/* Flush cache data. */
-	Xil_DCacheInvalidateRange((uintptr_t)DAC_DDR_BASEADDR,
-				  samples * AD9361_ADC_DAC_BYTES_PER_SAMPLE *
-				  (ad9361_phy_b->tx_dac->num_channels + ad9361_phy->tx_dac->num_channels));
-
-	no_os_mdelay(1000);
-
-#else
 	struct axi_dma_transfer transfer = {
 		// Number of bytes to write/read
 		.size = sizeof(sine_lut_iq),
@@ -755,10 +731,10 @@ int main(void)
 	axi_dmac_transfer_start(tx_dmac, &transfer);
 
 	/* Flush cache data. */
-	Xil_DCacheInvalidateRange((uintptr_t)dac_buffer,sizeof(sine_lut_iq));
+	Xil_DCacheInvalidateRange((uintptr_t)dac_buffer, sizeof(sine_lut_iq));
 
 	no_os_mdelay(1000);
-#endif
+
 #endif
 #ifdef FMCOMMS5
 	struct axi_dma_transfer read_transfer = {
@@ -806,16 +782,21 @@ int main(void)
 #endif
 #ifdef XILINX_PLATFORM
 #ifdef FMCOMMS5
-	Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,
+	Xil_DCacheInvalidateRange((uintptr_t)ADC_DDR_BASEADDR,
 				  samples * AD9361_ADC_DAC_BYTES_PER_SAMPLE * (ad9361_phy_b->rx_adc->num_channels
 						  +
 						  ad9361_phy->rx_adc->num_channels));
+	printf("DAC_DMA_EXAMPLE: address=%#x samples=%lu channels=%u bits=%u\n",
+	       (uintptr_t)ADC_DDR_BASEADDR,
+	       read_transfer.size / AD9361_ADC_DAC_BYTES_PER_SAMPLE,
+	       rx_adc_init.num_channels * 2,
+	       8 * sizeof(adc_buffer[0]));
 #else
 	Xil_DCacheInvalidateRange((uintptr_t)adc_buffer, sizeof(adc_buffer));
-#endif
 	printf("DAC_DMA_EXAMPLE: address=%#lx samples=%lu channels=%u bits=%lu\n",
 	       (uintptr_t)adc_buffer, NO_OS_ARRAY_SIZE(adc_buffer), rx_adc_init.num_channels,
 	       8 * sizeof(adc_buffer[0]));
+#endif
 #endif
 #endif
 #endif

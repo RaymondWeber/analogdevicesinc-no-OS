@@ -52,7 +52,7 @@ struct max_uart_init_param max11205_uart_extra_ip = {
 #endif
 
 struct max_gpio_init_param max11205_gpio_extra_ip = {
-	.direction = 0,
+	.vssel = MXC_GPIO_VSSEL_VDDIOH,
 };
 
 struct max_spi_init_param max11205_spi_extra_ip  = {

@@ -53,6 +53,7 @@ struct no_os_uart_init_param adxl355_uart_ip = {
 	.parity = NO_OS_UART_PAR_NO,
 	.stop = NO_OS_UART_STOP_1_BIT,
 	.extra = UART_EXTRA,
+	.platform_ops = UART_OPS,
 };
 #endif
 
@@ -92,6 +93,8 @@ struct adxl355_init_param adxl355_ip = {
 	.comm_type = ADXL355_SPI_COMM,
 #ifdef ADXL359_DEV
 	.dev_type = ID_ADXL359,
+#elif defined ADXL357_DEV
+	.dev_type = ID_ADXL357,
 #else
 	.dev_type = ID_ADXL355,
 #endif

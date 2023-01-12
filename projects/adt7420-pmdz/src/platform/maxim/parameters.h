@@ -44,7 +44,7 @@
 /***************************** Include Files **********************************/
 /******************************************************************************/
 #include "maxim_uart.h"
-#include "maxim_stdio.h"
+#include "maxim_uart_stdio.h"
 #include "maxim_i2c.h"
 #include "maxim_irq.h"
 #include "maxim_gpio.h"
@@ -59,6 +59,7 @@
 #endif
 #define UART_DEVICE_ID  0
 #define UART_BAUDRATE   57600
+#define UART_OPS        &max_uart_ops
 
 #define I2C_DEVICE_ID    2
 #define I2C_OPS         &max_i2c_ops

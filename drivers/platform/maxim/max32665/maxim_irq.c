@@ -225,6 +225,8 @@ void max_uart_callback(mxc_uart_req_t *req, int result)
 		ee = &_events[NO_OS_EVT_UART_TX_COMPLETE];
 	else if (req->rxLen == req->rxCnt && req->rxLen != 0)
 		ee = &_events[NO_OS_EVT_UART_RX_COMPLETE];
+	else
+		return;
 
 	ret = no_os_list_read_find(ee->actions, (void **)&a, &key);
 	if (ret)
@@ -257,7 +259,6 @@ int32_t max_irq_ctrl_init(struct no_os_irq_ctrl_desc **desc,
 		return -ENOMEM;
 
 	descriptor->irq_ctrl_id = param->irq_ctrl_id;
-	descriptor->platform_ops = param->platform_ops;
 	descriptor->extra = param->extra;
 
 	*desc = descriptor;
